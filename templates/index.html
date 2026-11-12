@@ -52,10 +52,12 @@
             </div>
 
             <div class="video-card">
-                <img
+                <video
                     id="video"
-                    src="{{ url_for('video_feed') }}"
-                    alt="Live webcam feed">
+                    autoplay
+                    playsinline
+                    muted>
+                </video>
             </div>
 
             <div class="camera-tip">
@@ -144,7 +146,7 @@
 
             <div class="speech-actions">
                 <button type="button" id="ss-speak" class="primary-btn">
-                    <span>▶</span> Speak sentence
+                    <span>â–¶</span> Speak sentence
                 </button>
 
                 <button type="button" id="ss-stop" class="secondary-btn">
@@ -195,11 +197,11 @@
 </main>
 
 <footer>
-    SignSpeak · FSPM Project · FAST-NUCES
+    SignSpeak Â· FSPM Project Â· FAST-NUCES
 </footer>
 
 <script src="{{ url_for('static', filename='js/sentence.js') }}"></script>
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='dist/signspeak.js') }}"></script>
 
 </body>
 </html>

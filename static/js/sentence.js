@@ -1,4 +1,4 @@
-﻿/* SignSpeak - Live prediction, sentence building and speech. */
+﻿/* SignSpeak - Browser predictions, sentence building and speech. */
 
 (function () {
   'use strict';
@@ -18,17 +18,12 @@
   let lastText = '';
   let voices = [];
 
-  // ---------------------------------------
-  // Display prediction information
-  // ---------------------------------------
-
   function render(data) {
     if (!data) return;
 
     letterEl.textContent = data.letter || '-';
 
     const confidence = Math.round((data.confidence || 0) * 100);
-
     const progress = Math.round((data.progress || 0) * 100);
 
     confidenceEl.textContent = confidence + '%';
@@ -38,7 +33,7 @@
     holdBar.style.width = progress + '%';
 
     if (!data.model_ready) {
-      statusEl.textContent = 'No trained model. Collect data and train the classifier.';
+      statusEl.textContent = 'Recognition model is not ready.';
     } else if (!data.hand) {
       statusEl.textContent = 'Show your hand to the camera.';
     } else if (!data.letter) {
@@ -60,59 +55,35 @@
     }
   }
 
-  // ---------------------------------------
-  // Retrieve backend prediction
-  // ---------------------------------------
+  // Receive recognition updates from browser.js.
+  window.addEventListener('signspeak:state', (event) => {
+    render(event.detail);
+  });
 
-  async function pollPrediction() {
-    try {
-      const response = await fetch('/prediction', {
-        cache: 'no-store',
-      });
-
-      if (!response.ok) {
-        throw new Error('Prediction request failed');
-      }
-
-      const data = await response.json();
-      render(data);
-    } catch {
-      statusEl.textContent = 'Cannot connect to SignSpeak server.';
-    } finally {
-      window.setTimeout(pollPrediction, 200);
-    }
-  }
-
-  // ---------------------------------------
-  // Sentence editing buttons
-  // ---------------------------------------
-
+  // Sentence editing controls.
   document.querySelectorAll('button[data-a]').forEach((button) => {
-    button.addEventListener('click', async () => {
+    button.addEventListener('click', () => {
       const action = button.dataset.a;
+
+      if (!window.SignSpeakBrowser) {
+        statusEl.textContent = 'SignSpeak is still loading.';
+        return;
+      }
 
       button.disabled = true;
 
       try {
-        const response = await fetch('/sentence/' + action, { method: 'POST' });
-
-        if (!response.ok) {
-          throw new Error('Sentence action failed');
-        }
-
-        render(await response.json());
-      } catch {
-        statusEl.textContent = 'Unable to update sentence. Try again.';
+        window.SignSpeakBrowser.applyAction(action);
+      } catch (error) {
+        console.error('Sentence editing error:', error);
+        statusEl.textContent = 'Unable to update sentence.';
       } finally {
         button.disabled = false;
       }
     });
   });
 
-  // ---------------------------------------
-  // Load available browser speech voices
-  // ---------------------------------------
-
+  // Load available browser speech voices.
   function loadVoices() {
     if (!('speechSynthesis' in window)) {
       speechStatus.textContent = 'Speech synthesis is not supported by this browser.';
@@ -143,14 +114,10 @@
 
   if ('speechSynthesis' in window) {
     loadVoices();
-
     window.speechSynthesis.addEventListener('voiceschanged', loadVoices);
   }
 
-  // ---------------------------------------
-  // Speak sentence
-  // ---------------------------------------
-
+  // Speak the current sentence.
   $('ss-speak').addEventListener('click', () => {
     const sentence = lastText.trim();
 
@@ -167,15 +134,12 @@
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(sentence);
-
     const selected = voiceSelect.value;
 
     if (selected !== '') {
       const voice = voices[Number(selected)];
 
-      if (voice) {
-        utterance.voice = voice;
-      }
+      if (voice) utterance.voice = voice;
     }
 
     utterance.onstart = () => {
@@ -193,17 +157,11 @@
     window.speechSynthesis.speak(utterance);
   });
 
-  // ---------------------------------------
-  // Stop speech
-  // ---------------------------------------
-
+  // Stop speech.
   $('ss-stop').addEventListener('click', () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       speechStatus.textContent = 'Speech stopped.';
     }
   });
-
-  // Start prediction updates
-  pollPrediction();
 })();

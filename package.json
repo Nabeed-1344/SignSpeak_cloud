@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint static/js",
-    "format:check": "prettier --check static/js/**/*.js eslint.config.js package.json .prettierrc.json"
+    "format:check": "prettier --check static/js/**/*.js eslint.config.js package.json .prettierrc.json",
+    "build": "esbuild static/js/browser.js --bundle --format=iife --outfile=static/dist/signspeak.js --define:module=undefined"
   },
   "repository": {
     "type": "git",
@@ -22,11 +23,15 @@
   "homepage": "https://github.com/Nabeed-1344/SignSpeak_cloud#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "esbuild": "^0.28.2",
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
     "prettier": "^3.10.1"
   },
   "overrides": {
     "minimatch": "^11.0.1"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^1.2.3"
   }
 }

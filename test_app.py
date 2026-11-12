@@ -1,8 +1,5 @@
-"""Basic Sprint 1 checks. Run with:  python -m unittest test_app.py
+﻿"""SignSpeak application tests."""
 
-These pass even on a machine without a webcam, because the app falls back
-to a placeholder frame.
-"""
 import unittest
 
 from app import app
@@ -16,7 +13,10 @@ class Sprint1Tests(unittest.TestCase):
     def test_home_page_loads(self):
         r = self.client.get("/")
         self.assertEqual(r.status_code, 200)
-        self.assertIn(b"/video_feed", r.data)
+        self.assertIn(b'id="video"', r.data)
+        self.assertIn(b"autoplay", r.data)
+        self.assertIn(b"static/js/sentence.js", r.data)
+        self.assertIn(b"static/dist/signspeak.js", r.data)
 
     def test_camera_status_is_json(self):
         r = self.client.get("/camera_status")

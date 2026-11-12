@@ -10,7 +10,7 @@ export default [
     files: ['static/js/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
-      sourceType: 'script',
+      sourceType: 'module',
       globals: {
         ...globals.browser,
       },
@@ -18,6 +18,16 @@ export default [
     rules: {
       'no-unused-vars': 'warn',
       'no-undef': 'error',
+    },
+  },
+  {
+    files: ['static/js/model.js'],
+    languageOptions: {
+      sourceType: 'script',
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
   },
 ];
