@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#10172a">
+    <title>SignSpeak | Communication Made Easier</title>
+
+    <link rel="stylesheet"
+          href="static/css/style.css">
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="brand">
+        <div class="brand-icon">S</div>
+        <div>
+            <h1>SignSpeak</h1>
+            <p>Communication through gestures</p>
+        </div>
+    </div>
+
+    <div id="status" class="status checking">
+        Checking camera...
+    </div>
+</header>
+
+<main class="dashboard">
+
+    <section class="intro">
+        <div>
+            <p class="eyebrow">ASSISTIVE COMMUNICATION SYSTEM</p>
+            <h2>Your hands have a voice.</h2>
+            <p class="intro-text">
+                Show ASL alphabet gestures to your webcam,
+                build a sentence and let SignSpeak speak it aloud.
+            </p>
+        </div>
+    </section>
+
+    <section class="workspace">
+
+        <div class="video-section card">
+            <div class="section-heading">
+                <div>
+                    <h3>Live recognition</h3>
+                    <p>Position your hand clearly in front of the camera.</p>
+                </div>
+                <span class="live-indicator">LIVE</span>
+            </div>
+
+            <div class="video-card">
+                <video
+                    id="video"
+                    autoplay
+                    playsinline
+                    muted>
+                </video>
+            </div>
+
+            <div class="camera-tip">
+                Keep your hand visible and hold each gesture steadily.
+            </div>
+        </div>
+
+        <div class="recognition-section card">
+
+            <div class="section-heading">
+                <div>
+                    <h3>Recognition details</h3>
+                    <p>Your current detected gesture.</p>
+                </div>
+            </div>
+
+            <div class="letter-display">
+                <span class="small-label">DETECTED LETTER</span>
+                <div id="ss-letter">-</div>
+                <p id="ss-status">Connecting to SignSpeak...</p>
+            </div>
+
+            <div class="confidence-area">
+                <div class="metric-heading">
+                    <span>Recognition confidence</span>
+                    <strong id="ss-confidence">0%</strong>
+                </div>
+
+                <div class="progress-track">
+                    <div id="ss-confidence-bar" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="hold-area">
+                <div class="metric-heading">
+                    <span>Gesture hold progress</span>
+                    <strong id="ss-progress-value">0%</strong>
+                </div>
+
+                <div class="progress-track">
+                    <div id="ss-bar" class="progress-fill hold-fill"></div>
+                </div>
+            </div>
+
+            <div class="instruction">
+                <strong>How to type:</strong>
+                Hold a gesture until it is registered. Release your hand
+                before showing the same letter again.
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="sentence-section card">
+
+        <div class="section-heading">
+            <div>
+                <h3>Your sentence</h3>
+                <p>Recognized letters appear here automatically.</p>
+            </div>
+            <span class="sentence-tag">LIVE TEXT</span>
+        </div>
+
+        <div
+            id="ss-text"
+            class="sentence-box empty"
+            aria-live="polite">
+            Your sentence will appear here...
+        </div>
+
+        <div class="sentence-actions">
+            <div class="editing-actions">
+                <button type="button" data-a="space" class="secondary-btn">
+                    Add space
+                </button>
+
+                <button type="button" data-a="backspace" class="secondary-btn">
+                    Backspace
+                </button>
+
+                <button type="button" data-a="clear" class="danger-btn">
+                    Clear
+                </button>
+            </div>
+
+            <div class="speech-actions">
+                <button type="button" id="ss-speak" class="primary-btn">
+                    <span>â–¶</span> Speak sentence
+                </button>
+
+                <button type="button" id="ss-stop" class="secondary-btn">
+                    Stop speech
+                </button>
+            </div>
+        </div>
+
+        <div class="voice-settings">
+            <label for="ss-voice">Speech voice</label>
+            <select id="ss-voice">
+                <option value="">Default system voice</option>
+            </select>
+
+            <span id="ss-speech-status" aria-live="polite">
+                Ready to speak.
+            </span>
+        </div>
+
+    </section>
+
+    <section class="instructions card">
+        <h3>How to use SignSpeak</h3>
+
+        <div class="steps">
+            <div class="step">
+                <span>01</span>
+                <p>Allow webcam access and position your hand.</p>
+            </div>
+
+            <div class="step">
+                <span>02</span>
+                <p>Show an ASL letter and hold it steadily.</p>
+            </div>
+
+            <div class="step">
+                <span>03</span>
+                <p>Build words and sentences one letter at a time.</p>
+            </div>
+
+            <div class="step">
+                <span>04</span>
+                <p>Press Speak sentence to hear your message.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    SignSpeak Â· FSPM Project Â· FAST-NUCES
+</footer>
+
+<script src="static/js/sentence.js"></script>
+<script src="static/dist/signspeak.js"></script>
+
+</body>
+</html>
