@@ -1,0 +1,32 @@
+{
+  "name": "signspeak_cloud",
+  "version": "1.0.0",
+  "description": "Flask web app that shows a live webcam feed in the browser.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint static/js",
+    "format:check": "prettier --check static/js/**/*.js eslint.config.js package.json .prettierrc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nabeed-1344/SignSpeak_cloud.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Nabeed-1344/SignSpeak_cloud/issues"
+  },
+  "homepage": "https://github.com/Nabeed-1344/SignSpeak_cloud#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "prettier": "^3.10.1"
+  },
+  "overrides": {
+    "minimatch": "^11.0.1"
+  }
+}

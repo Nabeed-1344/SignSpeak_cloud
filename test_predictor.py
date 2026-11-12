@@ -1,4 +1,4 @@
-"""Tests for feature extraction and sentence building (no webcam or MediaPipe
+﻿"""Tests for feature extraction and sentence building (no webcam or MediaPipe
 needed). Run with:  python -m unittest test_predictor.py
 """
 import unittest
@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import numpy as np
 
 from features import NUM_FEATURES, landmarks_to_features
-from predictor import AUTO_SPACE_SECONDS, HOLD_SECONDS, Predictor
+from predictor import AUTO_SPACE_SECONDS, HOLD_SECONDS, RELEASE_SECONDS, Predictor
 
 
 class FakeModel:
@@ -73,7 +73,7 @@ class PredictorTests(unittest.TestCase):
 
     def test_release_then_hold_repeats_letter(self):
         self.show(HOLD_SECONDS + 0.3)
-        self.show(0.2, features=None)
+        self.show(RELEASE_SECONDS + 0.1, features=None)
         self.show(HOLD_SECONDS + 0.3)
         self.assertEqual(self.p.text, "AA")
 
