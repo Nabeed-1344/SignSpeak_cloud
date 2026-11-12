@@ -1,0 +1,22 @@
+﻿__pycache__/
+*.py[cod]
+venv/
+.venv/
+.idea/
+.vscode/
+.pytest_cache/
+*.log
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+.aws/
+*credentials*
+*.pem
+*.key
+
+# Generated files
+instance/
+.DS_Store
+Thumbs.db
