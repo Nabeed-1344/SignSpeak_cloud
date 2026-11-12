@@ -63,7 +63,6 @@ def camera_status():
     """Lets the page show whether the webcam is working."""
     return jsonify(available=camera.is_available())
 
-
 @app.route("/prediction")
 def prediction():
     """Current letter, confidence, hold progress and the sentence so far."""
