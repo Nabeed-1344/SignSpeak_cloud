@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint static/js",
-    "format:check": "prettier --check static/js/**/*.js eslint.config.js package.json .prettierrc.json",
-    "build": "esbuild static/js/browser.js --bundle --format=iife --outfile=static/dist/signspeak.js --define:module=undefined && esbuild static/js/auth.js --bundle --format=iife --outfile=static/dist/auth.js"
+    "format:check": "prettier --check static/js/browser.js static/js/main.js static/js/model.js static/js/sentence.js static/js/images.js eslint.config.js package.json .prettierrc.json",
+    "build": "esbuild static/js/browser.js --bundle --format=iife --outfile=static/dist/signspeak.js --define:module=undefined && esbuild static/js/auth.js --bundle --format=iife --outfile=static/dist/auth.js && esbuild static/js/images.js --bundle --format=iife --outfile=static/dist/images.js"
   },
   "repository": {
     "type": "git",

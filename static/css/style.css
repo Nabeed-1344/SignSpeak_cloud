@@ -489,3 +489,63 @@ footer {
         width: 100%;
     }
 }
+
+/* My Images - Private S3 Storage */
+
+.image-section {
+    margin-top: 28px;
+}
+
+.image-upload-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.image-upload-controls input[type="file"] {
+    flex: 1;
+    min-width: 220px;
+    padding: 12px;
+    color: var(--muted);
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.image-upload-status {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.image-preview-container {
+    margin-top: 18px;
+}
+
+.uploaded-image {
+    display: block;
+    max-width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface-light);
+}
+
+.image-upload-controls button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 520px) {
+    .image-upload-controls {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .image-upload-controls button {
+        width: 100%;
+    }
+}

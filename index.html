@@ -183,6 +183,47 @@
 
     </section>
 
+<section class="image-section card">
+    <div class="section-heading">
+        <div>
+            <h3>My Images</h3>
+            <p>Upload and securely view your images using cloud storage.</p>
+        </div>
+        <span class="sentence-tag">PRIVATE S3 STORAGE</span>
+    </div>
+
+    <div class="image-upload-controls">
+        <input
+            type="file"
+            id="image-file"
+            accept="image/jpeg,image/png,image/webp"
+        >
+
+        <button
+            type="button"
+            id="image-upload-button"
+            class="primary-btn">
+            Upload Image
+        </button>
+    </div>
+
+    <p
+        id="image-upload-status"
+        class="image-upload-status"
+        aria-live="polite">
+        Sign in with Google to upload your images.
+    </p>
+
+    <div class="image-preview-container">
+        <img
+            id="uploaded-image"
+            class="uploaded-image"
+            alt="Your uploaded image preview"
+            hidden
+        >
+    </div>
+</section>
+
     <section class="instructions card">
         <h3>How to use SignSpeak</h3>
 
@@ -218,6 +259,7 @@
 <script src="static/js/sentence.js"></script>
 <script src="static/dist/signspeak.js"></script>
 <script src="static/dist/auth.js"></script>
+<script src="static/dist/images.js"></script>
 
 </body>
 </html>
