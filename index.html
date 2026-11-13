@@ -22,9 +22,24 @@
         </div>
     </div>
 
+   <div class="header-actions">
     <div id="status" class="status checking">
         Checking camera...
     </div>
+
+    <div id="auth-container">
+        <button id="login-button" class="auth-button">
+            Sign in with Google
+        </button>
+
+        <div id="user-info" hidden>
+            <span id="user-email"></span>
+            <button id="logout-button" class="auth-button">
+                Sign out
+            </button>
+        </div>
+    </div>
+</div>
 </header>
 
 <main class="dashboard">
@@ -202,6 +217,7 @@
 
 <script src="static/js/sentence.js"></script>
 <script src="static/dist/signspeak.js"></script>
+<script src="static/dist/auth.js"></script>
 
 </body>
 </html>
