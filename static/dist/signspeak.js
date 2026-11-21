@@ -4751,6 +4751,8 @@
     let releaseSince = null;
     let noHandSince = null;
     let autoSpaceAdded = false;
+    let lastDebugLog = 0;
+    let lastFeatureLog = 0;
     function setCameraStatus(type, message) {
       if (!cameraStatus) return;
       cameraStatus.className = "status " + type;
@@ -4831,6 +4833,16 @@
       releaseSince = null;
       autoSpaceAdded = false;
       const result = window.SignSpeakModel.predict(features, model);
+      if (now - lastDebugLog >= 1e3) {
+        const ranked = model.classes.map((label, index) => ({
+          letter: label,
+          confidence: Number(
+            result.probabilities[index].toFixed(3)
+          )
+        })).sort((a2, b2) => b2.confidence - a2.confidence);
+        console.log("SignSpeak Live Predictions:", ranked.slice(0, 5));
+        lastDebugLog = now;
+      }
       confidence = result.confidence;
       letter = confidence >= CONF_THRESHOLD ? result.letter : null;
       if (letter === null) {
@@ -4857,9 +4869,25 @@
       try {
         const now = performance.now();
         const result = detector.detectForVideo(video, now);
+        if (result.handednesses && result.handednesses.length > 0) {
+          console.log("HAND DETECTED AS:", result.handednesses[0][0].categoryName);
+        }
         hand = Boolean(result.landmarks && result.landmarks.length);
         if (hand) {
           const features = landmarksToFeatures(result.landmarks[0]);
+          console.log(
+            "WRIST X:",
+            result.landmarks[0][0].x,
+            "| INDEX FINGER TIP X:",
+            result.landmarks[0][8].x
+          );
+          if (now - lastFeatureLog >= 3e3) {
+            console.log(
+              "SignSpeak Live 42 Features:",
+              features.map((value) => Number(value.toFixed(4)))
+            );
+            lastFeatureLog = now;
+          }
           processPrediction(features, now);
         } else {
           letter = null;
@@ -4876,7 +4904,7 @@
         setCameraStatus("checking", "Loading SignSpeak...");
         const [vision, modelResponse] = await Promise.all([
           ih.forVisionTasks("/static/dist/wasm"),
-          fetch("/static/models/sign_model.json")
+          fetch("/static/models/sign_model_new.json")
         ]);
         if (!modelResponse.ok) {
           throw new Error("Could not load the recognition model.");

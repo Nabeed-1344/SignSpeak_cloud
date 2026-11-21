@@ -30,6 +30,8 @@ import './model.js';
   let releaseSince = null;
   let noHandSince = null;
   let autoSpaceAdded = false;
+  let lastDebugLog = 0;
+  let lastFeatureLog = 0;
 
   function setCameraStatus(type, message) {
     if (!cameraStatus) return;
@@ -84,9 +86,9 @@ import './model.js';
     const wristY = points[0][1];
 
     for (const point of points) {
-      point[0] -= wristX;
-      point[1] -= wristY;
-    }
+    point[0] -= wristX;
+    point[1] -= wristY;
+}
 
     let scale = 0;
 
@@ -132,6 +134,19 @@ import './model.js';
     autoSpaceAdded = false;
 
     const result = window.SignSpeakModel.predict(features, model);
+    if (now - lastDebugLog >= 1000) {
+  const ranked = model.classes
+    .map((label, index) => ({
+      letter: label,
+      confidence: Number(
+        result.probabilities[index].toFixed(3)
+      ),
+    }))
+    .sort((a, b) => b.confidence - a.confidence);
+
+  console.log('SignSpeak Live Predictions:', ranked.slice(0, 5));
+  lastDebugLog = now;
+}
 
     confidence = result.confidence;
     letter = confidence >= CONF_THRESHOLD ? result.letter : null;
@@ -165,13 +180,32 @@ import './model.js';
     try {
       const now = performance.now();
       const result = detector.detectForVideo(video, now);
+      if (result.handednesses && result.handednesses.length > 0) {
+  console.log('HAND DETECTED AS:', result.handednesses[0][0].categoryName);
+}
 
       hand = Boolean(result.landmarks && result.landmarks.length);
 
       if (hand) {
-        const features = landmarksToFeatures(result.landmarks[0]);
-        processPrediction(features, now);
-      } else {
+    const features = landmarksToFeatures(result.landmarks[0]);
+    console.log(
+    'WRIST X:',
+    result.landmarks[0][0].x,
+    '| INDEX FINGER TIP X:',
+    result.landmarks[0][8].x
+);
+
+    if (now - lastFeatureLog >= 3000) {
+        console.log(
+            'SignSpeak Live 42 Features:',
+            features.map(value => Number(value.toFixed(4)))
+        );
+
+        lastFeatureLog = now;
+    }
+
+    processPrediction(features, now);
+} else {
         letter = null;
         confidence = 0;
         processPrediction(null, now);
@@ -189,7 +223,7 @@ import './model.js';
 
       const [vision, modelResponse] = await Promise.all([
         FilesetResolver.forVisionTasks('/static/dist/wasm'),
-        fetch('/static/models/sign_model.json'),
+        fetch('/static/models/sign_model_new.json'),
       ]);
 
       if (!modelResponse.ok) {
